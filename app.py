@@ -40,8 +40,8 @@ async def report(body: ReportBody, req: Request):
         raise HTTPException(401, "Unauthorized")
     now = datetime.utcnow().isoformat()
     conn = sqlite3.connect(str(DB_PATH))
-    conn.execute("INSERT INTO records (app_name, event, timestamp) VALUES (?, ?, ?)", 
-                 (body.app_name, body.event, now))
+    conn.execute("INSERT INTO records(app_name,event,timestamp) VALUES (?, ?, ?)",
+    (body.app_name, body.event, now))
     conn.commit()
     conn.close()
     return {"status": "ok"}
