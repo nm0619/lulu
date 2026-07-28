@@ -40,8 +40,8 @@ async def report(body: ReportBody, req: Request):
         raise HTTPException(401, "Unauthorized")
     now = datetime.utcnow().isoformat()
     conn = sqlite3.connect(str(DB_PATH))
-    conn.execute("INSERT INTO records(app_name,event,timestamp) VALUES (?, ?, ?)",
-    (body.app_name, body.event, now))
+    conn.execute("INSERT INTO records (app_name, event, timestamp) VALUES (?, ?, ?)", 
+                 (body.app_name, body.event, now))
     conn.commit()
     conn.close()
     return {"status": "ok"}
@@ -59,7 +59,7 @@ async def summary():
     cur.execute("SELECT app_name, event, timestamp FROM records ORDER BY id ASC")
     rows = cur.fetchall()
     conn.close()
-    
+    
     sessions, opens = {}, {}
     for r in rows:
         app, ev, ts = r
@@ -74,3 +74,4 @@ async def summary():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+    
